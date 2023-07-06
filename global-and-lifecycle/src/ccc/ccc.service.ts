@@ -27,6 +27,7 @@ export class CccService
     const cccService = this.moduleRef.get<CccService>(CccService);
     console.log('-----------------------', cccService.findAll());
   }
+
   onModuleInit() {
     console.log(`CccService init`);
   }
