@@ -1,5 +1,6 @@
 import {
   Controller,
+  DefaultValuePipe,
   Get,
   HttpStatus,
   Param,
@@ -8,9 +9,11 @@ import {
   ParseEnumPipe,
   ParseFloatPipe,
   ParseIntPipe,
+  ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AaaPipe } from './aaa.pipe';
 
 enum Ggg {
   aaa = 'aaa',
@@ -78,5 +81,21 @@ export class AppController {
   @Get('gg/:enum')
   gg(@Param('enum', new ParseEnumPipe(Ggg)) e: Ggg) {
     return e;
+  }
+
+  //uuid
+  @Get('hh/:uuid')
+  hh(@Param('uuid', new ParseUUIDPipe()) uuid: Ggg) {
+    return uuid;
+  }
+
+  @Get('kkk')
+  kkk(@Query('kkk', new DefaultValuePipe('aaa')) kkk: Ggg) {
+    return kkk;
+  }
+
+  @Get('nnn/:bbb')
+  nnn(@Query('aaa', AaaPipe) aaa: string, @Param('bbb', AaaPipe) bbb: number) {
+    return aaa + bbb;
   }
 }
