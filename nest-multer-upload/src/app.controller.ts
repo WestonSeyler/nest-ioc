@@ -13,6 +13,7 @@ import {
   AnyFilesInterceptor,
 } from '@nestjs/platform-express';
 import { AppService } from './app.service';
+import { FileSizeValidationPipePipe } from './file-size-validation-pipe.pipe';
 
 @Controller()
 export class AppController {
@@ -55,7 +56,8 @@ export class AppController {
     }),
   )
   uploadAnyFiles(
-    @UploadedFiles() files: Array<Express.Multer.File>,
+    @UploadedFiles(FileSizeValidationPipePipe)
+    files: Array<Express.Multer.File>,
     @Body() body,
   ) {
     console.log('body', body);
