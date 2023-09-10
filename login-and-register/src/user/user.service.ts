@@ -1,11 +1,10 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 import * as crypto from 'crypto';
+import { LoginDto } from './dto/login.dto';
 
 function md5(str) {
   const hash = crypto.createHash('md5');
@@ -38,5 +37,17 @@ export class UserService {
       await this.userRepository.save(newUser);
       return '注册成功';
     }
+  }
+  async login(user: LoginDto) {
+    const foundUser = await this.userRepository.findOneBy({
+      username: user.username,
+    });
+    if (!foundUser) {
+      throw new HttpException('用户不存在', 200);
+    }
+    if (foundUser.password !== md5(user.password)) {
+      throw new HttpException('密码错误', 200);
+    }
+    return foundUser;
   }
 }
