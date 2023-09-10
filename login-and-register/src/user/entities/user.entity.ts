@@ -15,7 +15,7 @@ export class User {
     length: 50,
     comment: '用户名',
   })
-  name: string;
+  username: string;
 
   @Column({
     length: 50,
