@@ -14,6 +14,7 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
   @Get('sss')
   sss(@Session() session): string {
     console.log(session);
@@ -29,10 +30,12 @@ export class AppController {
     if (authorization) {
       try {
         const token = authorization.split(' ')[1];
+        //做一次校验
         const data = this.jwtService.verify(token);
         const newToken = this.jwtService.sign({
           code: data.count + 1,
         });
+        //生成一个新的token
         response.setHeader('token', newToken);
         return data.count + 1;
       } catch (error) {}
